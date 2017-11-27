@@ -71,13 +71,16 @@ if __name__ == '__main__':
 
 
     with tf.Graph().as_default(), tf.Session() as session:
+
         with tf.variable_scope("model", reuse=None):
             train_model = model_class(config, training=True)
         with tf.variable_scope("model", reuse=True):
             valid_model = model_class(config, training=False)
 
+        #restore model
         saver = tf.train.Saver(tf.all_variables(), max_to_keep=40)
         saver.restore(session, os.path.join(run_folder, config.model_name))
+        
         # training
         early_stop_best_loss = None
         start_saving = False
@@ -85,14 +88,17 @@ if __name__ == '__main__':
         train_losses, valid_losses = [], []
         start_time = time.time()
         for i in range(config.num_epochs):
+
             loss = util.run_epoch(session, train_model, 
                 data["train"]["data"], training=True, testing=False)
             train_losses.append((i, loss))
+            
             if i == 0:
                 continue
 
             logger.info('Epoch: {}, Train Loss: {}, Time Per Epoch: {}'.format(\
                     i, loss, (time.time() - start_time)/i))
+
             valid_loss = util.run_epoch(session, valid_model, data["valid"]["data"], training=False, testing=False)
             valid_losses.append((i, valid_loss))
             logger.info('Valid Loss: {}'.format(valid_loss))

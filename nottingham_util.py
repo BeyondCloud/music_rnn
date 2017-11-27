@@ -81,7 +81,7 @@ def prepare_nottingham_pickle(time_step, chord_cutoff=64, filename=PICKLE_LOC, v
 
     avg_seq = float(sum(seq_lens)) / len(seq_lens)
 
-    chords = { c: i for c, i in chords.iteritems() if chords[c] >= chord_cutoff }
+    chords = { c: i for c, i in chords.iteritems() if chords[c] >= chord_cutoff  or c == 'NONE'}
     chord_mapping = { c: i for i, c in enumerate(chords.keys()) }
     num_chords = len(chord_mapping)
     store['chord_to_idx'] = chord_mapping
