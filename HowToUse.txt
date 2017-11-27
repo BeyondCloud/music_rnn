@@ -1,0 +1,12 @@
+>to restore training
+>(need to edit config path)
+python rnn_restore.py --run_name sec_fuji --config_file ./models/sec_fuji/nl_2_hs_200_mc_0p5_dp_0p5_idp_0p8_tb_128.config
+
+>to generate midi
+python rnn_sample.py --config_file ./models/sec_fuji/nl_2_hs_200_mc_0p5_dp_0p5_idp_0p8_tb_128.config
+
+>to test precision
+python rnn_test.py --config_file ./models/sec_fuji/nl_2_hs_200_mc_0p5_dp_0p5_idp_0p8_tb_128.config
+
+>play midi
+timidity best.midi                                     
